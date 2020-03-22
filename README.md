@@ -1,4 +1,4 @@
-# MixedRealityResearch
+# Stroke
 
 Handtracking Notes
 1. Update Oculus
@@ -11,11 +11,13 @@ Handtracking Notes
     - File > Build Settings > Player Settings > XR Plugin Management > + > Oculus Loader
 6. Install Oculus XR Plugin
     - File > Build Settings > Player Settings > XR Plugin Management > Oculus XR Plugin > Install 
-7. Turn Hand Tracking On Scene
+7. Open HandsInteractionTrainScene in Unity
+    - Assets/Oculus/SampleFramework/Usage\HandsInteractionTrainScene
+8. Turn Hand Tracking On Scene
     - Scene > OVRCameraRig > OVR Manager (Script) > Quest Features > Hand Tracking Support > Controllers and Hands
-8. Enable Hand Tracking on Oculus
+9. Enable Hand Tracking on Oculus
     - Settings > See All > Experimental Features > Hand Tracking
-9. Turn on Hand Tracking on Oculus
+10. Turn on Hand Tracking on Oculus
     - Settings > Use Hands
 
 HandTracking ProTip
