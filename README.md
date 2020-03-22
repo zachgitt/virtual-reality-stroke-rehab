@@ -3,7 +3,9 @@
 Handtracking Notes
 1. Update Oculus
     - Settings > See All > About > Software Update
-2. Download XR Management Package
+2. Switch to Android
+    - File > Build Settings > Android > Switch
+3. Download XR Management Package
      - Window > Package Manager > XR Management > Import
 4. Download Oculus Integration
     - Window > Asset Store > Search “Oculus” > Import
