@@ -24,7 +24,7 @@ public class SceneController : MonoBehaviour
     void Update()
     {
         // Instantiate a balloon
-        if (!balloons[balloons.Count - 1].activeSelf)
+        if (!balloons[balloons.Count - 1].activeInHierarchy)
         {
             balloons.Add(CreateBalloon());
         }
@@ -33,7 +33,7 @@ public class SceneController : MonoBehaviour
     private GameObject CreateBalloon()
     {
         float x = Random.Range(-maxX, maxX);
-        float y = Random.Range(0, maxY);
+        float y = Random.Range(0.2f, maxY);
         float z = Random.Range(-maxZ, maxZ);
         return Instantiate(balloonPrefab, new Vector3(x, y, z), Quaternion.identity);
     }
