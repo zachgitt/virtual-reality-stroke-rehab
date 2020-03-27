@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Balloon : MonoBehaviour
 {
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +15,10 @@ public class Balloon : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Object.Destroy(this.gameObject);
     }
 }

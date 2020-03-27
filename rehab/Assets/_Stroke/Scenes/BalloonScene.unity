@@ -376,6 +376,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   balloonPrefab: {fileID: 6574056156901932910, guid: 7ef10a103467c44c295210aa2c7d8715,
     type: 3}
+  maxX: 1.5
+  maxY: 1.5
+  maxZ: 1.5
 --- !u!4 &1432029807
 Transform:
   m_ObjectHideFlags: 0
