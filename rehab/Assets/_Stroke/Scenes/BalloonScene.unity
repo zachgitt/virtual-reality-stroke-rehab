@@ -376,9 +376,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   balloonPrefab: {fileID: 6574056156901932910, guid: 7ef10a103467c44c295210aa2c7d8715,
     type: 3}
-  maxX: 1.5
-  maxY: 1.5
-  maxZ: 1.5
+  maxX: 1
+  maxY: 1
+  maxZ: 1
 --- !u!4 &1432029807
 Transform:
   m_ObjectHideFlags: 0
@@ -570,6 +570,16 @@ PrefabInstance:
     - target: {fileID: 4927695388962516, guid: c6a74181d4000004887343fb87b3c53a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114674612155881938, guid: c6a74181d4000004887343fb87b3c53a,
+        type: 3}
+      propertyPath: _enablePhysicsCapsules
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114674612155881938, guid: c6a74181d4000004887343fb87b3c53a,
+        type: 3}
+      propertyPath: _updateRootScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6a74181d4000004887343fb87b3c53a, type: 3}
