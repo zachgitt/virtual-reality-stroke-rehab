@@ -11,25 +11,30 @@ public class SceneController : MonoBehaviour
     public float maxZ;
 
     // Initialize private variables
-    private GameObject balloon;
+    private List<GameObject> balloons;
 
     // Start is called before the first frame update
     void Start()
     {
-        balloon = null;
+        balloons = new List<GameObject>();
+        balloons.Add(CreateBalloon());
     }
 
     // Update is called once per frame
     void Update()
     {
         // Instantiate a balloon
-        if (!balloon.activeSelf)
+        if (!balloons[balloons.Count - 1].activeSelf)
         {
-            Destroy(balloon);
-            float x = Random.Range(-maxX, maxX);
-            float y = Random.Range(0, maxY);
-            float z = Random.Range(-maxZ, maxZ);
-            balloon = Instantiate(balloonPrefab, new Vector3(x, y, z), Quaternion.identity);
+            balloons.Add(CreateBalloon());
         }
+    }
+
+    private GameObject CreateBalloon()
+    {
+        float x = Random.Range(-maxX, maxX);
+        float y = Random.Range(0, maxY);
+        float z = Random.Range(-maxZ, maxZ);
+        return Instantiate(balloonPrefab, new Vector3(x, y, z), Quaternion.identity);
     }
 }
