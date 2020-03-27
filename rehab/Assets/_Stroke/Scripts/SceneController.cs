@@ -23,8 +23,9 @@ public class SceneController : MonoBehaviour
     void Update()
     {
         // Instantiate a balloon
-        if (balloon == null || balloon.Equals(null))
+        if (!balloon.activeSelf)
         {
+            Destroy(balloon);
             float x = Random.Range(-maxX, maxX);
             float y = Random.Range(0, maxY);
             float z = Random.Range(-maxZ, maxZ);

@@ -7,7 +7,7 @@ public class Balloon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -18,6 +18,6 @@ public class Balloon : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Object.Destroy(this.gameObject);
+        this.gameObject.SetActive(false);
     }
 }
