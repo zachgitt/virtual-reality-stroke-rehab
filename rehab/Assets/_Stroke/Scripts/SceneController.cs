@@ -24,7 +24,7 @@ public class SceneController : MonoBehaviour
     void Update()
     {
         // Instantiate a balloon
-        if (!balloons[balloons.Count - 1].activeInHierarchy)
+        if (!Balloon.IsLastActive())
         {
             balloons.Add(CreateBalloon());
         }

@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Balloon : MonoBehaviour
 {
+    private static bool lastBalloonActive;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        lastBalloonActive = true;
     }
 
     // Update is called once per frame
@@ -16,8 +18,14 @@ public class Balloon : MonoBehaviour
         
     }
 
+    public static bool IsLastActive()
+    {
+        return lastBalloonActive;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         this.gameObject.SetActive(false);
+        lastBalloonActive = false;
     }
 }
