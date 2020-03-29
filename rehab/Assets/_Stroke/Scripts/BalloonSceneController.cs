@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneController : MonoBehaviour
+public class BalloonSceneController : MonoBehaviour
 {
     // Initalize variables
     public GameObject balloonPrefab;
