@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_Stroke/Scenes/BalloonScene.unity
     guid: e72fc798f418748179e685b7d5cae564
+  - enabled: 0
+    path: Assets/_Stroke/Scenes/BasketScene.unity
+    guid: 2b66c242c01ae45859d54eed54a1d51b
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 7573468acbb0a4188a550b7747b99684,
       type: 2}

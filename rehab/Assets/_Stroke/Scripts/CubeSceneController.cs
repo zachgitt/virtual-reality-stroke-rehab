@@ -15,6 +15,10 @@ public class CubeSceneController : MonoBehaviour
     public float maxZ;
     public float minSize;
     public float maxSize;
+    public GameObject bigCube;
+    public Material outlineMaterial;
+    public OVRHand leftHand;
+    public OVRHand rightHand;
 
     // Declare private variables
     private List<GameObject> solidCubes;
@@ -25,6 +29,7 @@ public class CubeSceneController : MonoBehaviour
     void Start()
     {
         solidCubes = new List<GameObject>();
+        hollowCubes = new List<GameObject>();
         completed = 0;
     }
 
@@ -38,11 +43,18 @@ public class CubeSceneController : MonoBehaviour
         }
 
         // Playing game
-        var hand = GetComponent<OVRHand>();
-        if (hand.GetFingerIsPinching(HandFinger.Index))
+        /*float leftPinchStrength = leftHand.GetFingerPinchStrength(HandFinger.Index);
+        if (leftPinchStrength > 0.5f)
         {
-            Debug.Log("");
+            HighlightPrefab();
+
         }
+
+        float rightPinchStrength = rightHand.GetFingerPinchStrength(HandFinger.Index);
+        if (rightPinchStrength > 0.5f)
+        {
+            bigCube.GetComponent<Renderer>().material = new Material(Shader.Find("Diffuse"));
+        }*/
     }
 
     private void TryAppendSolidHollow()
@@ -75,5 +87,11 @@ public class CubeSceneController : MonoBehaviour
             }
             hollowCubes.Add(hollowCube);
         }
+    }
+
+    private void HighlightPrefab()
+    {
+        //GameObject cube = solidCubes[0];
+        bigCube.GetComponent<Renderer>().material = outlineMaterial;
     }
 }
