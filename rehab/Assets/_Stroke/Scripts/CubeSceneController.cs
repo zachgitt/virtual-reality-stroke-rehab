@@ -15,7 +15,6 @@ public class CubeSceneController : MonoBehaviour
     public float maxZ;
     public float minSize;
     public float maxSize;
-    public GameObject bigCube;
     public Material outlineMaterial;
     public OVRHand leftHand;
     public OVRHand rightHand;
@@ -24,6 +23,7 @@ public class CubeSceneController : MonoBehaviour
     private List<GameObject> solidCubes;
     private List<GameObject> hollowCubes;
     private int completed;
+    private Color currColor;
 
     // Start is called before the first frame update
     void Start()
@@ -36,25 +36,26 @@ public class CubeSceneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Declare temp variables
+        int last = solidCubes.Count - 1;
+
         // Create new pair
         if (completed < numCubes)
         {
             TryAppendSolidHollow();
         }
 
-        // Playing game
-        /*float leftPinchStrength = leftHand.GetFingerPinchStrength(HandFinger.Index);
-        if (leftPinchStrength > 0.5f)
-        {
-            HighlightPrefab();
-
-        }
-
+        // Pinch solid cube
+        float leftPinchStrength = leftHand.GetFingerPinchStrength(HandFinger.Index);
         float rightPinchStrength = rightHand.GetFingerPinchStrength(HandFinger.Index);
-        if (rightPinchStrength > 0.5f)
+        if (leftPinchStrength > 0.5f || rightPinchStrength > 0.5f)
         {
-            bigCube.GetComponent<Renderer>().material = new Material(Shader.Find("Diffuse"));
-        }*/
+            PickupPrefab(solidCubes[last]);
+        }
+        else
+        {
+            DropPrefab(solidCubes[last]);
+        }
     }
 
     private void TryAppendSolidHollow()
@@ -66,13 +67,13 @@ public class CubeSceneController : MonoBehaviour
             float x = Random.Range(-maxX, maxX);
             float y = Random.Range(0.5f, maxY);
             float z = Random.Range(0.0f, maxZ);
-            Color c = Random.ColorHSV();
+            currColor = Random.ColorHSV();
 
             // Create solid cube
             GameObject solidCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             solidCube.transform.position = new Vector3(x, y, z);
             solidCube.transform.localScale = new Vector3(size, size, size);
-            solidCube.GetComponent<Renderer>().material.color = c;
+            solidCube.GetComponent<Renderer>().material.color = currColor;
             solidCubes.Add(solidCube);
 
             // Create hollow cube
@@ -83,15 +84,23 @@ public class CubeSceneController : MonoBehaviour
             hollowCube.transform.localScale = new Vector3(size, size, size);
             foreach (Transform child in hollowCube.transform)
             {
-                child.GetComponent<Renderer>().material.color = c;
+                child.GetComponent<Renderer>().material.color = currColor;
             }
             hollowCubes.Add(hollowCube);
         }
     }
 
-    private void HighlightPrefab()
+    private void PickupPrefab(GameObject prefab)
     {
-        //GameObject cube = solidCubes[0];
-        bigCube.GetComponent<Renderer>().material = outlineMaterial;
+        // Highlight prefab
+        prefab.GetComponent<Renderer>().material = outlineMaterial;
+        prefab.GetComponent<Renderer>().material.color = currColor;
+    }
+
+    private void DropPrefab(GameObject prefab)
+    {
+        // Unhighlight prefab
+        prefab.GetComponent<Renderer>().material = new Material(Shader.Find("Diffuse"));
+        prefab.GetComponent<Renderer>().material.color = currColor;
     }
 }
