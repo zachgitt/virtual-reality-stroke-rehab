@@ -555,6 +555,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b93eb72f01c0e49a5a7a5f96b00f201b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hollowCubePrefab: {fileID: 4681479914346826782, guid: f834395d0411941608b48e02e289da74,
+    type: 3}
+  numCubes: 5
+  minDistance: 0.1
+  maxDistance: 0.5
+  maxX: 0.5
+  maxY: 1
+  maxZ: 0.5
+  minSize: 0.01
+  maxSize: 0.1
 --- !u!4 &2138193679
 Transform:
   m_ObjectHideFlags: 0

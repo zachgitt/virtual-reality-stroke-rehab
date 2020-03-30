@@ -5,12 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/_Stroke/Scenes/BalloonScene.unity
-    guid: e72fc798f418748179e685b7d5cae564
   - enabled: 1
     path: Assets/_Stroke/Scenes/CubeScene.unity
     guid: ce5f640da129c471b834ad91e74de1e5
+  - enabled: 0
+    path: Assets/_Stroke/Scenes/BalloonScene.unity
+    guid: e72fc798f418748179e685b7d5cae564
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 7573468acbb0a4188a550b7747b99684,
       type: 2}
