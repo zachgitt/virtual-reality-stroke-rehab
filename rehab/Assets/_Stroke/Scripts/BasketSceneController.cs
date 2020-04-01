@@ -11,7 +11,6 @@ public class BasketSceneController : MonoBehaviour
     public GameObject acornPrefab;
     public bool showSquirrel;
     public bool basketInUpperHalf;
-
     public float maxX;
     public float maxY;
     public float maxZ;
@@ -25,24 +24,32 @@ public class BasketSceneController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Vector3 basketPos = new Vector3(0, 1, 0.5f); ;
+        Vector3 basketPos = new Vector3(0, 0.6f, 0.25f); ;
         if (!basketInUpperHalf)
-        {
-            basketPos -= new Vector3(0, 1, 0.25f);
-        }
-
+            basketPos -= new Vector3(0, 0.3f, 0);
         basket = Instantiate(basketPrefab, basketPos, Quaternion.identity);
 
-        if (showSquirrel)
+        addAcorn();
+        makeSquirrel();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    void makeSquirrel()
+    {
+        if(showSquirrel)
         {
             squirrel = Instantiate(squirrelPrefab, basket.transform.position, Quaternion.identity);
             squirrel.transform.position -= new Vector3(0, 0, 0.3f);
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void addAcorn()
     {
-        
+        acorns.Add(Instantiate(acornPrefab, new Vector3(0, 1, 0), Quaternion.identity));
     }
 }
