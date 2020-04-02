@@ -331,7 +331,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!135 &1602896142
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -494,9 +494,9 @@ MonoBehaviour:
     type: 3}
   showSquirrel: 0
   basketInUpperHalf: 0
-  maxX: 0
-  maxY: 0
-  maxZ: 0
+  maxX: 1
+  maxY: 0.8
+  maxZ: 0.4
 --- !u!1001 &1975091774
 PrefabInstance:
   m_ObjectHideFlags: 0

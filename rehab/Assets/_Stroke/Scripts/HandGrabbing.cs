@@ -24,13 +24,10 @@ public class HandGrabbing : OVRGrabber
     void CheckPinchIndex()
     {
         float pinchStrength = hand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
-        bool isGrabbing = !m_grabbedObj && (pinchStrength > pinchThreshold)
-            && m_grabCandidates.Count > 0;
-        bool isReleasing = m_grabbedObj && !(pinchStrength > pinchThreshold);
-
-        if (isGrabbing)
+        if (!m_grabbedObj && (pinchStrength > pinchThreshold) && m_grabCandidates.Count > 0)
             GrabBegin();
-        else if (isReleasing)
+
+        else if (m_grabbedObj && !(pinchStrength > pinchThreshold))
             GrabEnd();
     }
 }
