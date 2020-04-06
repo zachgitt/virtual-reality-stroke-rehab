@@ -6,6 +6,8 @@ public class HandGrabbing : OVRGrabber
 {
     private OVRHand hand;
     private float pinchThreshold = 0.7f;
+    public Material outlineMaterial;
+    private Material startingMaterial;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -24,10 +26,17 @@ public class HandGrabbing : OVRGrabber
     void CheckPinchIndex()
     {
         float pinchStrength = hand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
-        if (!m_grabbedObj && (pinchStrength > pinchThreshold) && m_grabCandidates.Count > 0)
+        if (!m_grabbedObj && (pinchStrength > pinchThreshold) && (m_grabCandidates.Count > 0))
+        {
             GrabBegin();
+            startingMaterial = m_grabbedObj.GetComponentInChildren<MeshRenderer>().material;
+            m_grabbedObj.GetComponentInChildren<MeshRenderer>().material = outlineMaterial;
+        }
 
         else if (m_grabbedObj && !(pinchStrength > pinchThreshold))
+        {
+            m_grabbedObj.GetComponentInChildren<MeshRenderer>().material = startingMaterial;
             GrabEnd();
+        }
     }
 }

@@ -7,6 +7,7 @@ public class CubeSceneController : MonoBehaviour
 {
     // Declare public variables
     public GameObject hollowCubePrefab;
+    public GameObject solidCubePrefab;
     public uint numCubes;
     public float minDistance;
     public float maxDistance;
@@ -46,9 +47,7 @@ public class CubeSceneController : MonoBehaviour
         }
 
         // Pinch solid cube
-        float leftPinchStrength = leftHand.GetFingerPinchStrength(HandFinger.Index);
-        float rightPinchStrength = rightHand.GetFingerPinchStrength(HandFinger.Index);
-        if (leftPinchStrength > 0.5f || rightPinchStrength > 0.5f)
+        if (GrabbingAndPinching(solidCubes[last], 0.5f))
         {
             PickupPrefab(solidCubes[last]);
         }
@@ -56,6 +55,19 @@ public class CubeSceneController : MonoBehaviour
         {
             DropPrefab(solidCubes[last]);
         }
+    }
+
+    private bool GrabbingAndPinching(GameObject cube, float thresh)
+    {
+        float leftPinchStrength = leftHand.GetFingerPinchStrength(HandFinger.Index);
+        float rightPinchStrength = rightHand.GetFingerPinchStrength(HandFinger.Index);
+        bool grabbed = cube.GetComponent<OVRGrabbable>().isGrabbed;
+
+        if ((leftPinchStrength > thresh && grabbed) || (rightPinchStrength > thresh && grabbed))
+        {
+            return true;
+        }
+        return false;
     }
 
     private void TryAppendSolidHollow()
@@ -70,10 +82,19 @@ public class CubeSceneController : MonoBehaviour
             currColor = Random.ColorHSV();
 
             // Create solid cube
-            GameObject solidCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            solidCube.transform.position = new Vector3(x, y, z);
+            //GameObject solidCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            //solidCube.transform.position = new Vector3(x, y, z);
+            //solidCube.transform.localScale = new Vector3(size, size, size);
+            //solidCube.GetComponent<Renderer>().material.color = currColor;
+            //solidCube.AddComponent<Rigidbody>();
+            //solidCube.GetComponent<Rigidbody>().isKinematic = true;
+            //solidCube.AddComponent<BoxCollider>();
+            //solidCube.GetComponent<BoxCollider>().isTrigger = true;
+            //solidCube.AddComponent<OVRGrabbable>();
+            GameObject solidCube = Instantiate(solidCubePrefab, new Vector3(x, y, z), Quaternion.identity);
             solidCube.transform.localScale = new Vector3(size, size, size);
-            solidCube.GetComponent<Renderer>().material.color = currColor;
+            solidCube.GetComponent<Renderer>().material.color = currColor; // TODO: remove this or MeshRenderer
+            solidCube.GetComponent<MeshRenderer>().material.color = currColor;
             solidCubes.Add(solidCube);
 
             // Create hollow cube
@@ -82,6 +103,7 @@ public class CubeSceneController : MonoBehaviour
             float z_ = Random.Range(z + minDistance, z + maxDistance);
             GameObject hollowCube = Instantiate(hollowCubePrefab, new Vector3(x_, y_, z_), Quaternion.identity);
             hollowCube.transform.localScale = new Vector3(size, size, size);
+            // Recolor the entire frame
             foreach (Transform child in hollowCube.transform)
             {
                 child.GetComponent<Renderer>().material.color = currColor;

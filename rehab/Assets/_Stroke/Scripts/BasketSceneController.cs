@@ -50,6 +50,11 @@ public class BasketSceneController : MonoBehaviour
         }
     }
 
+    public static GameObject getLastAcorn()
+    {
+        return acorns[acorns.Count - 1];
+    }
+
     void AddAcorn()
     {
         acorns.Add(Instantiate(acornPrefab, new Vector3(0, 1, 0), Quaternion.identity));

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Acorn : OVRGrabbable
 {
+
     public GameObject acornPrefab;
     public Material outlineMaterial;
 
@@ -14,35 +15,38 @@ public class Acorn : OVRGrabbable
     protected override void Start()
     {
         base.Start();
-        startingMaterial = acornPrefab.GetComponentInChildren<MeshRenderer>().material;
+        startingMaterial = this.GetComponentInChildren<MeshRenderer>().material;
+        //Debug.Log("Staring Material: " + startingMaterial);
     }
 
-    private GameObject GetGrabbedAcorn()
+    protected void Update()
     {
-        return BasketSceneController.acorns[BasketSceneController.acorns.Count - 1];
+        //this.GetComponentInChildren<MeshRenderer>().material = outlineMaterial;
+        //Debug.Log("Material: " + this.GetComponentInChildren<MeshRenderer>().material);
+
+        //if (this.isGrabbed)
+        //{
+        //    this.GetComponentInChildren<MeshRenderer>().material = outlineMaterial;
+        //    this.GetComponentInChildren<Rigidbody>().useGravity = true;
+        //}
+        //else
+        //{
+        //    this.GetComponentInChildren<MeshRenderer>().material = startingMaterial;
+        //}
+
     }
 
-    private void ChangeGrabbedAcornMaterial(Material mat)
-    {
-        grabbedAcorn = GetGrabbedAcorn();
-        grabbedAcorn.GetComponentInChildren<MeshRenderer>().material = mat;
-    }
+    //public override void GrabBegin(OVRGrabber hand, Collider grabPoint)
+    //{
+    //    base.GrabBegin(hand, grabPoint);
+    //    this.GetComponentInChildren<MeshRenderer>().material = outlineMaterial;
+    //    //ChangeGrabbedAcornMaterial(outlineMaterial);
+    //}
 
-    private void ActivateAcornGravity()
-    {
-        GetGrabbedAcorn().GetComponentInChildren<Rigidbody>().useGravity = true;
-    }
-
-    public override void GrabBegin(OVRGrabber hand, Collider grabPoint)
-    {
-        ChangeGrabbedAcornMaterial(outlineMaterial);
-        base.GrabBegin(hand, grabPoint);
-    }
-
-    public override void GrabEnd(Vector3 linearVelocity, Vector3 angularVelocity)
-    {
-        ChangeGrabbedAcornMaterial(startingMaterial);
-        ActivateAcornGravity();
-        base.GrabEnd(linearVelocity, angularVelocity);
-    }
+    //public override void GrabEnd(Vector3 linearVelocity, Vector3 angularVelocity)
+    //{
+    //    ChangeGrabbedAcornMaterial(startingMaterial);
+    //    ActivateAcornGravity();
+    //    base.GrabEnd(linearVelocity, angularVelocity);
+    //}
 }

@@ -5,13 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/_Stroke/Scenes/CubeScene.unity
     guid: ce5f640da129c471b834ad91e74de1e5
   - enabled: 0
     path: Assets/_Stroke/Scenes/BalloonScene.unity
     guid: e72fc798f418748179e685b7d5cae564
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Stroke/Scenes/BasketScene.unity
     guid: 2b66c242c01ae45859d54eed54a1d51b
   m_configObjects:
