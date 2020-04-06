@@ -23,9 +23,9 @@ public class MainMenuSceneController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (SceneManager.LoadScene(other.scene))
-        {
-            Debug.Log("TODO");
-        }
+        //if (SceneManager.LoadScene(other.scene))
+        //{
+        //    Debug.Log("TODO");
+        //}
     }
 }

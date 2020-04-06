@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class Basket : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //    private void OnTriggerEnter(Collider other)
+    //    {
+    //        Vector3 collissionPoint = other.transform.position;
+    //        other.GetComponentInChildren<Rigidbody>().useGravity = false;
+    //        other.transform.position = collissionPoint;
+    //    }
 }

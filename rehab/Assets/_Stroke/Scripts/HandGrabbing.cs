@@ -36,6 +36,11 @@ public class HandGrabbing : OVRGrabber
         else if (m_grabbedObj && !(pinchStrength > pinchThreshold))
         {
             m_grabbedObj.GetComponentInChildren<MeshRenderer>().material = startingMaterial;
+            if (m_grabbedObj.name.Equals("Acorn"))
+            {
+                m_grabbedObj.GetComponentInChildren<Rigidbody>().useGravity = true;
+                m_grabbedObj.GetComponentInChildren<Rigidbody>().isKinematic = false;
+            }
             GrabEnd();
         }
     }

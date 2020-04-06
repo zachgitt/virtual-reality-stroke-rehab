@@ -4,49 +4,50 @@ using UnityEngine;
 
 public class Acorn : OVRGrabbable
 {
-
-    public GameObject acornPrefab;
-    public Material outlineMaterial;
-
-    private Material startingMaterial;
-    private GameObject grabbedAcorn;
+    public Material startingMaterial;
+    private static float pathLength;
+    private float tempPath;
 
     // Start is called before the first frame update
     protected override void Start()
     {
+        startingMaterial = GetComponentInChildren<MeshRenderer>().material;
+        pathLength = 0.0f;
         base.Start();
-        startingMaterial = this.GetComponentInChildren<MeshRenderer>().material;
-        //Debug.Log("Staring Material: " + startingMaterial);
     }
 
-    protected void Update()
+    private void Update()
     {
-        //this.GetComponentInChildren<MeshRenderer>().material = outlineMaterial;
-        //Debug.Log("Material: " + this.GetComponentInChildren<MeshRenderer>().material);
-
-        //if (this.isGrabbed)
-        //{
-        //    this.GetComponentInChildren<MeshRenderer>().material = outlineMaterial;
-        //    this.GetComponentInChildren<Rigidbody>().useGravity = true;
-        //}
-        //else
-        //{
-        //    this.GetComponentInChildren<MeshRenderer>().material = startingMaterial;
-        //}
-
+        tempPath = Mathf.Sqrt(Mathf.Pow(transform.position.x, 2));
+        tempPath += Mathf.Sqrt(Mathf.Pow(transform.position.y, 2));
+        tempPath += Mathf.Sqrt(Mathf.Pow(transform.position.z, 2));
+        pathLength += tempPath;
     }
 
-    //public override void GrabBegin(OVRGrabber hand, Collider grabPoint)
-    //{
-    //    base.GrabBegin(hand, grabPoint);
-    //    this.GetComponentInChildren<MeshRenderer>().material = outlineMaterial;
-    //    //ChangeGrabbedAcornMaterial(outlineMaterial);
-    //}
+    public override void GrabBegin(OVRGrabber hand, Collider grabPoint)
+    {
+        base.GrabBegin(hand, grabPoint);
+    }
 
-    //public override void GrabEnd(Vector3 linearVelocity, Vector3 angularVelocity)
-    //{
-    //    ChangeGrabbedAcornMaterial(startingMaterial);
-    //    ActivateAcornGravity();
-    //    base.GrabEnd(linearVelocity, angularVelocity);
-    //}
+    public override void GrabEnd(Vector3 linearVelocity, Vector3 angularVelocity)
+    {
+        base.GrabEnd(linearVelocity, angularVelocity);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.name.Equals("Basket"))
+        {
+            GetComponentInChildren<MeshRenderer>().material = startingMaterial;
+            GetComponentInChildren<Rigidbody>().useGravity = false;
+            GetComponentInChildren<Rigidbody>().isKinematic = true;
+            BasketSceneController.addAcorn = true;
+        }
+    }
+
+    public static float GetPathLength()
+    {
+        return pathLength;
+    }
+
 }

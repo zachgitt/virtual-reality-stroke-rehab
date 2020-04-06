@@ -312,7 +312,8 @@ MonoBehaviour:
   m_parentHeldObject: 1
   m_moveHandPosition: 0
   m_gripTransform: {fileID: 1602896143}
-  m_grabVolumes: []
+  m_grabVolumes:
+  - {fileID: 1602896142}
   m_controller: 0
   m_parentTransform: {fileID: 0}
   m_player: {fileID: 0}
@@ -495,7 +496,7 @@ MonoBehaviour:
     type: 3}
   showSquirrel: 0
   basketInUpperHalf: 0
-  maxX: 1
+  maxX: 0.5
   maxY: 0.8
   maxZ: 0.4
 --- !u!1001 &1975091774
@@ -596,7 +597,8 @@ MonoBehaviour:
   m_parentHeldObject: 1
   m_moveHandPosition: 0
   m_gripTransform: {fileID: 1975091779}
-  m_grabVolumes: []
+  m_grabVolumes:
+  - {fileID: 1975091776}
   m_controller: 0
   m_parentTransform: {fileID: 0}
   m_player: {fileID: 0}
