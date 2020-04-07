@@ -5,9 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuSceneController : MonoBehaviour
 {
-    public Scene balloonScene;
-    public Scene basketScene;
-    public Scene cubeScene;
+    public GameObject balloonScene;
+    public GameObject basketScene;
+    public GameObject cubeScene;
+    private Material mat;
 
     // Start is called before the first frame update
     void Start()
@@ -23,9 +24,25 @@ public class MainMenuSceneController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //if (SceneManager.LoadScene(other.scene))
-        //{
-        //    Debug.Log("TODO");
-        //}
+        balloonScene.GetComponent<MeshRenderer>().material = mat;
+
+        switch (other.gameObject.tag)
+        {
+            case "BalloonScene":
+                SceneManager.LoadScene(1);
+                break;
+
+            case "BasketScene":
+                SceneManager.LoadScene(2);
+                break;
+
+            case "CubeScene":
+                SceneManager.LoadScene(3);
+                break;
+
+            default:
+                Debug.Log("This should not be reached.");
+                break;
+        }
     }
 }
