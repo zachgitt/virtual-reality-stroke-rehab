@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using static OVRHand;
+using UnityEngine.UI;
+
 
 public class CubeSceneController : MonoBehaviour
 {
@@ -16,6 +18,7 @@ public class CubeSceneController : MonoBehaviour
     public float maxZ;
     public float minSize;
     public float maxSize;
+    public float hollowToSolidScale;
     public Material outlineMaterial;
     public OVRHand leftHand;
     public OVRHand rightHand;
@@ -23,37 +26,69 @@ public class CubeSceneController : MonoBehaviour
     // Declare private variables
     private List<GameObject> solidCubes;
     private List<GameObject> hollowCubes;
-    private int completed;
     private Color currColor;
+    private float startTime;
+    private Text scoreText;
+    private bool createCubes;
+    private float pinchThresh;
+    private List<float> timers;
+    private List<float> distances;
+    private float cubeStart;
+    private bool gameOver;
+    private float avgHandSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
         solidCubes = new List<GameObject>();
         hollowCubes = new List<GameObject>();
-        completed = 0;
+        startTime = -1;
+        scoreText = GetComponentInChildren<Text>();
+        createCubes = true;
+        pinchThresh = 0.5f;
+        cubeStart = -1;
+        gameOver = false;
+        avgHandSpeed = -1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Declare temp variables
-        int last = solidCubes.Count - 1;
-
         // Create new pair
-        if (completed < numCubes)
-        {
-            TryAppendSolidHollow();
-        }
+        UpdateSolidHollow();
+        MovePrefab(solidCubes[solidCubes.Count - 1], pinchThresh);
+        UpdateCanvas();
+    }
 
+    private void MovePrefab(GameObject prefab, float pinchThresh)
+    {
         // Pinch solid cube
-        if (GrabbingAndPinching(solidCubes[last], 0.5f))
+        if (GrabbingAndPinching(prefab, pinchThresh))
         {
-            PickupPrefab(solidCubes[last]);
+            PickupPrefab(prefab);
         }
         else
         {
-            DropPrefab(solidCubes[last]);
+            DropPrefab(prefab);
+        }
+    }
+
+    private void UpdateCanvas()
+    {
+
+        // Gameover
+        if (gameOver)
+        {
+           
+            scoreText.text = "Score: " + (solidCubes.Count - 1).ToString() + "\n"
+                           + "Time: " + (Time.time - startTime).ToString("f1") + "\n"
+                           + "Avg Hand Speed: " + avgHandSpeed.ToString("f2");
+        }
+        else
+        {
+            // Update canvas during game
+            scoreText.text = "Score: " + (solidCubes.Count - 1).ToString() + "\n"
+                            + "Time: " + (Time.time - startTime).ToString("f1");
         }
     }
 
@@ -70,10 +105,14 @@ public class CubeSceneController : MonoBehaviour
         return false;
     }
 
-    private void TryAppendSolidHollow()
+    private void UpdateSolidHollow()
     {
-        if (solidCubes.Count == 0 /*|| !solidCubes[solidCubes.Count-1].activeInHierarchy*/)
+
+        if (createCubes && solidCubes.Count < numCubes)
         {
+            // Create 1 pair at a time
+            createCubes = false;
+
             // Initialize parameters
             float size = Random.Range(minSize, maxSize);
             float x = Random.Range(-maxX, maxX);
@@ -82,17 +121,9 @@ public class CubeSceneController : MonoBehaviour
             currColor = Random.ColorHSV();
 
             // Create solid cube
-            //GameObject solidCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            //solidCube.transform.position = new Vector3(x, y, z);
-            //solidCube.transform.localScale = new Vector3(size, size, size);
-            //solidCube.GetComponent<Renderer>().material.color = currColor;
-            //solidCube.AddComponent<Rigidbody>();
-            //solidCube.GetComponent<Rigidbody>().isKinematic = true;
-            //solidCube.AddComponent<BoxCollider>();
-            //solidCube.GetComponent<BoxCollider>().isTrigger = true;
-            //solidCube.AddComponent<OVRGrabbable>();
+            float solidSize = size * hollowToSolidScale;
             GameObject solidCube = Instantiate(solidCubePrefab, new Vector3(x, y, z), Quaternion.identity);
-            solidCube.transform.localScale = new Vector3(size, size, size);
+            solidCube.transform.localScale = new Vector3(solidSize, solidSize, solidSize);
             solidCube.GetComponent<Renderer>().material.color = currColor; // TODO: remove this or MeshRenderer
             solidCube.GetComponent<MeshRenderer>().material.color = currColor;
             solidCubes.Add(solidCube);
@@ -109,11 +140,30 @@ public class CubeSceneController : MonoBehaviour
                 child.GetComponent<Renderer>().material.color = currColor;
             }
             hollowCubes.Add(hollowCube);
+
+            // Save cube distance
+            float dx = x - x_;
+            float dy = y - y_;
+            float dz = z - z_;
+            float distance = (float) System.Math.Sqrt((dx * dx) + (dy * dy) + (dz * dz));
+            distances.Add(distance);
         }
     }
 
     private void PickupPrefab(GameObject prefab)
     {
+        // Start the game
+        if (startTime == -1)
+        {
+            startTime = Time.time;
+        }
+
+        // Start the cube timer
+        if (cubeStart == -1)
+        {
+            cubeStart = Time.time;
+        }
+
         // Highlight prefab
         prefab.GetComponent<Renderer>().material = outlineMaterial;
         prefab.GetComponent<Renderer>().material.color = currColor;
@@ -124,5 +174,67 @@ public class CubeSceneController : MonoBehaviour
         // Unhighlight prefab
         prefab.GetComponent<Renderer>().material = new Material(Shader.Find("Diffuse"));
         prefab.GetComponent<Renderer>().material.color = currColor;
+
+        // End the cube timer
+        if (SolidInsideHollow(prefab, hollowCubes[hollowCubes.Count-1]))
+        {
+            float elapsedTime = Time.time - cubeStart;
+            timers.Add(elapsedTime);
+            createCubes = true;
+            prefab.SetActive(false);
+            cubeStart = -1;
+            //hollow.SetActive(false);
+        }
+
+
+        // End the game
+        if (timers.Count == numCubes)
+        {
+            gameOver = true;
+            float totalDistance = 0;
+            float totalTime = 0;
+            foreach (float d in distances) totalDistance += d;
+            foreach (float t in timers) totalTime += t;
+            avgHandSpeed = totalDistance / totalTime;
+        }
+    }
+
+    private bool SolidInsideHollow(GameObject solid, GameObject hollow)
+    {
+        // Save 8 corner combinations of (1,1,1)...(-1,-1,-1)
+        List<Vector3> corners = new List<Vector3>();
+        for (int x = -1; x < 2; x += 2)
+        {
+            for (int y = -1; y < 2; y += 2)
+            {
+                for (int z = -1; z < 2; z += 2)
+                {
+                    Vector3 coords = solid.transform.TransformPoint(new Vector3(x, y, z));
+                    corners.Add(coords);
+                }
+            }
+        }
+
+        // Save boundaries
+        float xmin = hollow.transform.TransformPoint(new Vector3(-1, 0, 0)).x;
+        float xmax = hollow.transform.TransformPoint(new Vector3(1, 0, 0)).x;
+        float ymin = hollow.transform.TransformPoint(new Vector3(0, -1, 0)).y;
+        float ymax = hollow.transform.TransformPoint(new Vector3(0, 1, 0)).y;
+        float zmin = hollow.transform.TransformPoint(new Vector3(0, 0, -1)).z;
+        float zmax = hollow.transform.TransformPoint(new Vector3(0, 0, 1)).z;
+
+        // Check corners out of bounds
+        foreach (Vector3 corner in corners)
+        {
+            if (corner.x <= xmin || xmax <= corner.x ||
+                corner.y <= ymin || ymax <= corner.y ||
+                corner.z <= zmin || zmax <= corner.z)
+            {
+                return false;
+            }
+        }
+
+
+        return true;
     }
 }
