@@ -15,6 +15,7 @@ public class Balloon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         
     }
 
@@ -27,5 +28,8 @@ public class Balloon : MonoBehaviour
     {
         this.gameObject.SetActive(false);
         lastBalloonActive = false;
+        string handName = other.transform.parent.transform.parent.transform.parent.name;
+        BalloonSceneController.UpdatePathLength(handName, other.transform.position);
     }
+
 }

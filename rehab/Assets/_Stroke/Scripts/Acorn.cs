@@ -55,6 +55,9 @@ public class Acorn : OVRGrabbable
             gameOver = true;
             pathLength += tempPath;
 
+            if (BasketSceneController.acorns.Count == 1)
+                BasketSceneController.StartGameTimer();
+
             if (BasketSceneController.acorns.Count == 12)
                 BasketSceneController.EndGame();
         }

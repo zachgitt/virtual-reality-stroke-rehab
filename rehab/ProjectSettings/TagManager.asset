@@ -7,6 +7,8 @@ TagManager:
   - BalloonScene
   - BasketScene
   - CubeScene
+  - LeftHand
+  - RightHand
   layers:
   - Default
   - TransparentFX
