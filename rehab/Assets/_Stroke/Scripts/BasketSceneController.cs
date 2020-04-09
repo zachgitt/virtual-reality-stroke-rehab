@@ -61,7 +61,6 @@ public class BasketSceneController : MonoBehaviour
             scoreText.text = "Score: " + (acorns.Count - 1).ToString() +
                 "\nTime: " + (Time.time - time).ToString("f1");
         }
-
     }
 
     void MakeSquirrel()
@@ -83,6 +82,7 @@ public class BasketSceneController : MonoBehaviour
             float z = UnityEngine.Random.Range(0, maxZ);
             acorns.Add(Instantiate(acornPrefab, new Vector3(x, y, z), Quaternion.identity));
         }
+
     }
 
     public static void AddInteraction()
@@ -92,8 +92,7 @@ public class BasketSceneController : MonoBehaviour
 
     public static void StartGameTimer()
     {
-        if (acorns.Count == 1)
-            time = Time.time;
+        time = Time.time;
     }
 
     public static void EndGame()
