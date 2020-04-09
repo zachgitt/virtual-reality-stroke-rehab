@@ -28,14 +28,7 @@ public class Acorn : OVRGrabbable
     private void Update()
     {
         UpdatePathLength();
-
-        /* If acorn is under map and not in the basket, reset acorn position */
-        if (transform.position.y <= 0.0f && !inBasket)
-        {
-            GetComponentInChildren<Rigidbody>().useGravity = false;
-            GetComponentInChildren<Rigidbody>().isKinematic = true;
-            transform.position = startPos;
-        }
+        CheckPos();
     }
 
     public override void GrabBegin(OVRGrabber hand, Collider grabPoint)
@@ -57,9 +50,13 @@ public class Acorn : OVRGrabbable
             GetComponentInChildren<Rigidbody>().isKinematic = true;
             while (Random.Range(0.0f, 1.0f) < 0.7f) ;
             BasketSceneController.addAcorn = true;
+            BasketSceneController.acornsNotInBasket--;
             inBasket = true;
             gameOver = true;
+            pathLength += tempPath;
 
+            if (BasketSceneController.acorns.Count == 12)
+                BasketSceneController.EndGame();
         }
     }
 
@@ -70,16 +67,25 @@ public class Acorn : OVRGrabbable
             tempPath = Mathf.Sqrt(Mathf.Pow(prevPos.x - transform.position.x, 2));
             tempPath += Mathf.Sqrt(Mathf.Pow(prevPos.y - transform.position.y, 2));
             tempPath += Mathf.Sqrt(Mathf.Pow(prevPos.z - transform.position.z, 2));
-            pathLength += tempPath;
             prevPos = transform.position;
         }
     }
 
-
-
     public static float GetPathLength()
     {
         return pathLength;
+    }
+
+    void CheckPos()
+    {
+        /* If acorn is under map and not in the basket, reset acorn position */
+        if (transform.position.y <= 0.0f && !inBasket)
+        {
+            GetComponentInChildren<Rigidbody>().useGravity = false;
+            GetComponentInChildren<Rigidbody>().isKinematic = true;
+            transform.position = startPos;
+            tempPath = 0.0f;
+        }
     }
 
 }

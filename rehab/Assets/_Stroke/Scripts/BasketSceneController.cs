@@ -6,25 +6,31 @@ using UnityEngine.UI;
 
 public class BasketSceneController : MonoBehaviour
 {
-    // Initalize variables
+    // Initalize publicvariables
     public GameObject basketPrefab;
     public GameObject squirrelPrefab;
     public GameObject acornPrefab;
-    public Text scoreText;
     public bool showSquirrel;
     public bool basketInUpperHalf;
     public float maxX;
     public float maxY;
     public float maxZ;
-    public static bool addAcorn;
-    public static float acornsNotInBasket;
 
     // Initialize private variables
-    public static List<GameObject> acorns;
     private GameObject basket;
     private GameObject squirrel;
-    private float totalPathLength;
-    private bool gameOver;
+
+    //Initiate static variables
+    public static List<GameObject> acorns;
+    public static bool addAcorn;
+    public static float acornsNotInBasket;
+    private static Text scoreText;
+    private static int interactions;
+    private static float time;
+    private static bool gameOver;
+    private static float totalPathLength;
+    private static float accuracy;
+    private static float handSpeed;
 
 
     // Start is called before the first frame update
@@ -35,7 +41,11 @@ public class BasketSceneController : MonoBehaviour
             basket.transform.position -= new Vector3(0, 0.3f, 0);
         acorns = new List<GameObject>();
         addAcorn = true;
-        gameOver = false; 
+        gameOver = false;
+        interactions = 0;
+        acornsNotInBasket = 0;
+        time = Time.time;
+        scoreText = GetComponentInChildren<Text>();
         AddAcorn();
         MakeSquirrel();
     }
@@ -46,7 +56,11 @@ public class BasketSceneController : MonoBehaviour
         MakeSquirrel();
         AddAcorn();
         if (!gameOver)
+        {
             totalPathLength = Acorn.GetPathLength();
+            scoreText.text = "Score: " + (acorns.Count - 1).ToString() +
+                "\nTime: " + (Time.time - time).ToString("f1");
+        }
 
     }
 
@@ -61,22 +75,39 @@ public class BasketSceneController : MonoBehaviour
 
     void AddAcorn()
     {
-
-        if (addAcorn && acorns.Count < 12 && acornsNotInBasket < 1)
+        if (addAcorn && acorns.Count < 12 && !gameOver)
         {
             addAcorn = false;
             float x = UnityEngine.Random.Range(-maxX, maxX);
-            float y = UnityEngine.Random.Range(0.1f, maxY);
+            float y = UnityEngine.Random.Range(0.2f, maxY);
             float z = UnityEngine.Random.Range(0, maxZ);
             acorns.Add(Instantiate(acornPrefab, new Vector3(x, y, z), Quaternion.identity));
-            scoreText.text = "Score: " + (acorns.Count - 1).ToString() + "\nTotal Path Length: " + totalPathLength.ToString("f3");
         }
-
-        else if (acorns.Count == 12 && !gameOver)
-        {
-            gameOver = true;
-            scoreText.text = "Score: " + (acorns.Count).ToString() + "\nTotal Path Length: " + totalPathLength.ToString();
-        }
-
     }
+
+    public static void AddInteraction()
+    {
+        interactions++;
+    }
+
+    public static void StartGameTimer()
+    {
+        if (acorns.Count == 1)
+            time = Time.time;
+    }
+
+    public static void EndGame()
+    {
+        gameOver = true;
+        //Update screen text to display all measurements
+        time = Time.time - time;
+        accuracy = (12.0f / (float)interactions) * 100.0f;
+        handSpeed = totalPathLength / time;
+        scoreText.text = "Score: " + (acorns.Count).ToString() +
+            ", Time: " + time.ToString("f1") +
+            "\nTotal Path Length: " + totalPathLength.ToString("f3") +
+            "\nAccuracy: " + accuracy.ToString("f1") +
+            "%\nAvg hand speed: " + handSpeed.ToString("f2");
+    }
+
 }

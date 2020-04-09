@@ -65,7 +65,7 @@ MonoBehaviour:
   m_snapOffset: {fileID: 0}
   m_grabPoints:
   - {fileID: 7225951792397084689}
-  startingMaterial: {fileID: 0}
+  startingMaterial: {fileID: 2100000, guid: f9d00626694a441c58ac0dd90234a76e, type: 2}
 --- !u!1 &6327028965219171534
 GameObject:
   m_ObjectHideFlags: 0

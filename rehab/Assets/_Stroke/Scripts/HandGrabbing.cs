@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class HandGrabbing : OVRGrabber
 {
-    private OVRHand hand;
-    private float pinchThreshold = 0.7f;
+    // Initialize public variables
     public Material outlineMaterial;
+
+    // Intialize private variables
+    private OVRHand hand;
+    private float pinchThreshold = 0.6f;
     private Material startingMaterial;
 
     // Start is called before the first frame update
@@ -29,18 +32,21 @@ public class HandGrabbing : OVRGrabber
         if (!m_grabbedObj && (pinchStrength > pinchThreshold) && (m_grabCandidates.Count > 0))
         {
             GrabBegin();
+            if (BasketSceneController.acorns.Count == 1)
+                BasketSceneController.StartGameTimer();
             startingMaterial = m_grabbedObj.GetComponentInChildren<MeshRenderer>().material;
             m_grabbedObj.GetComponentInChildren<MeshRenderer>().material = outlineMaterial;
+            BasketSceneController.AddInteraction();
         }
 
         else if (m_grabbedObj && !(pinchStrength > pinchThreshold))
         {
-            m_grabbedObj.GetComponentInChildren<MeshRenderer>().material = startingMaterial;
             if (m_grabbedObj.name.Equals("Acorn"))
             {
                 m_grabbedObj.GetComponentInChildren<Rigidbody>().useGravity = true;
                 m_grabbedObj.GetComponentInChildren<Rigidbody>().isKinematic = false;
             }
+            m_grabbedObj.GetComponentInChildren<MeshRenderer>().material = startingMaterial;
             GrabEnd();
         }
     }
