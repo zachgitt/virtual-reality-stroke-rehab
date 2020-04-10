@@ -111,7 +111,7 @@ public class CubeSceneController : MonoBehaviour
     private void UpdateSolidHollow()
     {
 
-        if (createCubes && solidCubes.Count <= numCubes)
+        if (createCubes && solidCubes.Count < numCubes)
         {
             // Create 1 pair at a time
             createCubes = false;
