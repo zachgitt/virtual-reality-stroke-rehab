@@ -42,6 +42,8 @@ public class CubeSceneController : MonoBehaviour
     {
         solidCubes = new List<GameObject>();
         hollowCubes = new List<GameObject>();
+        timers = new List<float>();
+        distances = new List<float>();
         startTime = -1;
         scoreText = GetComponentInChildren<Text>();
         createCubes = true;

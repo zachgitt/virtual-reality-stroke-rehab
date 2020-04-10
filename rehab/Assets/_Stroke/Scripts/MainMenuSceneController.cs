@@ -8,24 +8,9 @@ public class MainMenuSceneController : MonoBehaviour
     public GameObject balloonScene;
     public GameObject basketScene;
     public GameObject cubeScene;
-    private Material mat;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnTriggerEnter(Collider other)
     {
-        balloonScene.GetComponent<MeshRenderer>().material = mat;
-
         switch (other.gameObject.tag)
         {
             case "BalloonScene":
