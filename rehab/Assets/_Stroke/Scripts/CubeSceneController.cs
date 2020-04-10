@@ -185,7 +185,7 @@ public class CubeSceneController : MonoBehaviour
             createCubes = true;
             prefab.SetActive(false);
             cubeStart = -1;
-            //hollow.SetActive(false);
+            hollowCubes[hollowCubes.Count - 1].SetActive(false);
         }
 
 
