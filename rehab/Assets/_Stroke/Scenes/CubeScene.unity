@@ -1008,7 +1008,7 @@ MonoBehaviour:
   maxZ: 0.5
   minSize: 0.05
   maxSize: 0.3
-  hollowToSolidScale: 0.5
+  hollowToSolidScale: 0.85
   outlineMaterial: {fileID: 2100000, guid: 0b025377add5045e8a6167aeec5980a0, type: 2}
   leftHand: {fileID: 203102947}
   rightHand: {fileID: 1345499981}
@@ -1042,4 +1042,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHand: {fileID: 203102947}
   rightHand: {fileID: 1345499981}
-  threshold: 0.5
+  threshold: 0.8

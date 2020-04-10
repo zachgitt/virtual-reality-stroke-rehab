@@ -85,7 +85,7 @@ public class CubeSceneController : MonoBehaviour
            
             scoreText.text = "Score: " + (solidCubes.Count - 1).ToString() + "\n"
                            + "Time: " + (endTime - startTime).ToString("f1") + "\n"
-                           + "Avg Hand Speed: " + avgHandSpeed.ToString("f2");
+                           + "Avg Hand Speed: " + avgHandSpeed.ToString("f2") + "m/s";
         }
         else
         {
@@ -111,7 +111,7 @@ public class CubeSceneController : MonoBehaviour
     private void UpdateSolidHollow()
     {
 
-        if (createCubes && solidCubes.Count < numCubes)
+        if (createCubes && solidCubes.Count <= numCubes)
         {
             // Create 1 pair at a time
             createCubes = false;
