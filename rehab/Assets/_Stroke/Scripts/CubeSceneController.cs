@@ -83,8 +83,8 @@ public class CubeSceneController : MonoBehaviour
         if (gameOver)
         {
            
-            scoreText.text = "Score: " + (solidCubes.Count - 1).ToString() + "\n"
-                           + "Time: " + (endTime - startTime).ToString("f1") + "\n"
+            scoreText.text = "Score: " + numCubes.ToString() + "\n"
+                           + "Time: " + (endTime - startTime).ToString("f1") + "s\n"
                            + "Avg Hand Speed: " + avgHandSpeed.ToString("f2") + "m/s";
         }
         else
