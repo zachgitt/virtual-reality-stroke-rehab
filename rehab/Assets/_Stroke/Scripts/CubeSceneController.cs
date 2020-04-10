@@ -35,6 +35,7 @@ public class CubeSceneController : MonoBehaviour
     private List<float> distances;
     private float cubeStart;
     private bool gameOver;
+    private float endTime;
     private float avgHandSpeed;
 
     // Start is called before the first frame update
@@ -83,7 +84,7 @@ public class CubeSceneController : MonoBehaviour
         {
            
             scoreText.text = "Score: " + (solidCubes.Count - 1).ToString() + "\n"
-                           + "Time: " + (Time.time - startTime).ToString("f1") + "\n"
+                           + "Time: " + (endTime - startTime).ToString("f1") + "\n"
                            + "Avg Hand Speed: " + avgHandSpeed.ToString("f2");
         }
         else
@@ -193,6 +194,7 @@ public class CubeSceneController : MonoBehaviour
         if (timers.Count == numCubes)
         {
             gameOver = true;
+            endTime = Time.time;
             float totalDistance = 0;
             float totalTime = 0;
             foreach (float d in distances) totalDistance += d;
