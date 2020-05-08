@@ -18,7 +18,7 @@ public class Item : OVRGrabbable
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.y <= 0 && !inCorrectBox)
+        if (transform.position.y <= 0 && !inBox)
         {
             missed = true;
             GetComponentInChildren<Rigidbody>().useGravity = false;
@@ -35,8 +35,11 @@ public class Item : OVRGrabbable
     {
         if (!inBox && other.name.Contains("Box"))
         {
+            Vector3 triggerPos = transform.position;
             inBox = true;
             GetComponentInChildren<Rigidbody>().useGravity = false;
+            GetComponentInChildren<Rigidbody>().isKinematic = true;
+            transform.position = triggerPos;
 
             // Item was placed in correct box
             if (other.CompareTag(tag))

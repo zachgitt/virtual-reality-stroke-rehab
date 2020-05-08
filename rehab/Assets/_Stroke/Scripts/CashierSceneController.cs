@@ -65,6 +65,7 @@ public class CashierSceneController : MonoBehaviour
 
     void DisplayResults()
     {
+        float acc; 
         belt.SetActive(false);
         foreach (Item item in itemsSpawned)
         {
@@ -74,13 +75,14 @@ public class CashierSceneController : MonoBehaviour
             else if (item.WasMissed())
                 itemsDropped++;
 
-            else
+            else //put into wrong box
                 fails++;
         }
 
         fails += itemsDropped;
+        acc = ((float) score / (float) itemsToSpawn) * 100;
         scoreText.text = "Score: " + score.ToString() + ", Fails: " + fails.ToString() +
-            "\nItems dropped: " + itemsDropped + ", Accuracy " + (score/itemsToSpawn).ToString();
+            "\nItems dropped: " + itemsDropped + ", Accuracy " + acc.ToString("f2") + "%";
     }
 
     void RandomizeBagOrder()
