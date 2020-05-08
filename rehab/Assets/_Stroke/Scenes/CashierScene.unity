@@ -792,7 +792,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belt: {fileID: 997053661}
   endPoint: {fileID: 2124162853}
-  speed: 0.74
+  speed: 0.99
 --- !u!65 &997053668
 BoxCollider:
   m_ObjectHideFlags: 0

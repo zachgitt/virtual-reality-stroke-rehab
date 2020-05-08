@@ -33,7 +33,7 @@ public class Item : OVRGrabbable
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name.Contains("Box"))
+        if (!inBox && other.name.Contains("Box"))
         {
             inBox = true;
             GetComponentInChildren<Rigidbody>().useGravity = false;

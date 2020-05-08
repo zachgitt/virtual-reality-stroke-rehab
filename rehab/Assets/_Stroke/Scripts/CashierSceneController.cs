@@ -55,7 +55,7 @@ public class CashierSceneController : MonoBehaviour
         }
 
         // Timer for spawning items
-        if (Time.time - itemTimer > 1.0f)
+        if (Time.time - itemTimer > 1.8f)
         {
             SpawnRandomItem();
             itemTimer = Time.time;
