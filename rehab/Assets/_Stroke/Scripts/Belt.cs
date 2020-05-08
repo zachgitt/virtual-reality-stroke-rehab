@@ -10,6 +10,6 @@ public class Belt : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        other.transform.position = Vector3.MoveTowards(other.transform.position, endPoint.position, speed * Time.deltaTime);
+        other.transform.position -= new Vector3(0, 0, speed * Time.deltaTime);
     }
 }
