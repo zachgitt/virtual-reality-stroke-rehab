@@ -23,6 +23,10 @@ public class LoadSceneScript : MonoBehaviour
                 SceneManager.LoadScene(3);
                 break;
 
+            case "CashierScene":
+                SceneManager.LoadScene(4);
+                break;
+
             default:
                 Debug.Log("This should not be reached.");
                 break;

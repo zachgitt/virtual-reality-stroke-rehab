@@ -40,6 +40,13 @@ public class BasketSceneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
+         * Make sure time is displayed at 0 every time game is loaded
+         * from the main menu and before the first acorn is grabbed
+        */
+        if (!gameStarted)
+            time = 0.0f;
+
         if (acorns[0].GetInteractions() > 0 && !gameStarted)
         {
             time = Time.time;

@@ -36,9 +36,10 @@ public class BalloonSceneController : MonoBehaviour
 
         leftPos = leftHand.transform.position;
         rightPos = rightHand.transform.position;
+        time = Time.time;
+
 
         balloons = new List<Balloon>();
-        time = Time.time;
         SpawnBalloon();
     }
 
