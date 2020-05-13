@@ -586,11 +586,10 @@ MonoBehaviour:
     type: 3}
   acornPrefab: {fileID: 6327028965219171534, guid: 0832f5567494442f8af071aad5c910a1,
     type: 3}
-  showSquirrel: 0
-  basketInUpperHalf: 0
   maxX: 0.5
   maxY: 0.8
   maxZ: 0.4
+  scoreText: {fileID: 1742554634}
 --- !u!114 &1787219969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -598,7 +597,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1787219966}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0dc99db5a48a4da8ba1f2d7fa31c92e, type: 3}
   m_Name: 

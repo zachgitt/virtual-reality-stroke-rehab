@@ -12,7 +12,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
@@ -27,9 +27,9 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 45, y: 1, z: 45}
-  m_Center: {x: 0, y: -50, z: 0}
---- !u!114 &5329909064568718504
+  m_Size: {x: 45, y: 8.82, z: 45}
+  m_Center: {x: 0, y: -51.22, z: 0}
+--- !u!114 &4242313324719245200
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -52,7 +52,7 @@ GameObject:
   - component: {fileID: 8751798439248877849}
   m_Layer: 0
   m_Name: BasketPrefab
-  m_TagString: Untagged
+  m_TagString: Basket
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -142,6 +142,11 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: e4332187589f04e59b2805f46d3a1b77,
         type: 3}
       propertyPath: m_Name
+      value: Basket
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: e4332187589f04e59b2805f46d3a1b77,
+        type: 3}
+      propertyPath: m_TagString
       value: Basket
       objectReference: {fileID: 0}
     m_RemovedComponents: []

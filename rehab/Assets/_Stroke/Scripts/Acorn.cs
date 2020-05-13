@@ -6,13 +6,12 @@ public class Acorn : OVRGrabbable
 {
     public Material startingMaterial;
 
-    private float tempPath;
+    private int interactions;
     private bool inBasket;
     private Vector3 startPos;
-    
-    private static float pathLength = 0.0f;
-    private bool gameOver;
+    private float pathLength = 0.0f;
     private Vector3 prevPos;
+    public string tagg;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -20,8 +19,10 @@ public class Acorn : OVRGrabbable
         startingMaterial = GetComponentInChildren<MeshRenderer>().material;
         startPos = transform.position;
         prevPos = startPos;
-        gameOver = false;
         inBasket = false;
+        pathLength = 0.0f;
+        interactions = 0;
+        tagg = "None";
         base.Start();
     }
 
@@ -29,6 +30,45 @@ public class Acorn : OVRGrabbable
     {
         UpdatePathLength();
         CheckPos();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Basket"))
+        {
+            inBasket = true;
+            tagg = other.tag;
+            interactions++;
+        }
+    }
+
+
+    void UpdatePathLength()
+    {
+        if (!inBasket)
+        {
+            pathLength += Mathf.Sqrt(Mathf.Pow(prevPos.x - transform.position.x, 2));
+            pathLength += Mathf.Sqrt(Mathf.Pow(prevPos.y - transform.position.y, 2));
+            pathLength += Mathf.Sqrt(Mathf.Pow(prevPos.z - transform.position.z, 2));
+            prevPos = transform.position;
+        }
+    }
+
+    public bool IsInBasket() { return inBasket; }
+    public float GetPathLength() { return pathLength; }
+    public int GetInteractions() { return interactions; }
+
+    void CheckPos()
+    {
+        /* If acorn is under map and not in the basket, reset acorn position */
+        if (transform.position.y <= 0.0f & !inBasket)
+        {
+            GetComponentInChildren<Rigidbody>().useGravity = false;
+            GetComponentInChildren<Rigidbody>().isKinematic = true;
+            transform.position = startPos;
+            pathLength = 0.0f;
+            interactions++;
+        }
     }
 
     public override void GrabBegin(OVRGrabber hand, Collider grabPoint)
@@ -39,56 +79,8 @@ public class Acorn : OVRGrabbable
     public override void GrabEnd(Vector3 linearVelocity, Vector3 angularVelocity)
     {
         base.GrabEnd(linearVelocity, angularVelocity);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.name.Equals("Basket") && !inBasket)
-        {
-            GetComponentInChildren<MeshRenderer>().material = startingMaterial;
-            GetComponentInChildren<Rigidbody>().useGravity = false;
-            GetComponentInChildren<Rigidbody>().isKinematic = true;
-            while (Random.Range(0.0f, 1.0f) < 0.7f) ;
-            BasketSceneController.addAcorn = true;
-            BasketSceneController.acornsNotInBasket--;
-            inBasket = true;
-            gameOver = true;
-            pathLength += tempPath;
-
-            if (BasketSceneController.acorns.Count == 1)
-                BasketSceneController.StartGameTimer();
-
-            if (BasketSceneController.acorns.Count == 12)
-                BasketSceneController.EndGame();
-        }
-    }
-
-    void UpdatePathLength()
-    {
-        if (!gameOver)
-        {
-            tempPath = Mathf.Sqrt(Mathf.Pow(prevPos.x - transform.position.x, 2));
-            tempPath += Mathf.Sqrt(Mathf.Pow(prevPos.y - transform.position.y, 2));
-            tempPath += Mathf.Sqrt(Mathf.Pow(prevPos.z - transform.position.z, 2));
-            prevPos = transform.position;
-        }
-    }
-
-    public static float GetPathLength()
-    {
-        return pathLength;
-    }
-
-    void CheckPos()
-    {
-        /* If acorn is under map and not in the basket, reset acorn position */
-        if (transform.position.y <= 0.0f && !inBasket)
-        {
-            GetComponentInChildren<Rigidbody>().useGravity = false;
-            GetComponentInChildren<Rigidbody>().isKinematic = true;
-            transform.position = startPos;
-            tempPath = 0.0f;
-        }
+        GetComponentInChildren<Rigidbody>().useGravity = true;
+        GetComponentInChildren<Rigidbody>().isKinematic = false;
     }
 
 }

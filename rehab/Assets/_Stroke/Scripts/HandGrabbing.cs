@@ -26,25 +26,6 @@ public class HandGrabbing : OVRGrabber
         CheckPinchIndex();      
     }
 
-    void AcornGrabGameUpdate()
-    {
-        if (m_grabbedObj.name.Equals("Acorn"))
-        {
-            if (BasketSceneController.acorns.Count == 1)
-                BasketSceneController.StartGameTimer();
-            BasketSceneController.AddInteraction();
-        }
-    }
-
-    void AcornReleaseGameUpdate()
-    {
-        if (m_grabbedObj.name.Equals("Acorn"))
-        {
-            m_grabbedObj.GetComponentInChildren<Rigidbody>().useGravity = true;
-            m_grabbedObj.GetComponentInChildren<Rigidbody>().isKinematic = false;
-        }
-    }
-
     void CheckPinchIndex()
     {
         float pinchStrength = hand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
@@ -53,13 +34,11 @@ public class HandGrabbing : OVRGrabber
             GrabBegin();
             startingMaterial = m_grabbedObj.GetComponentInChildren<MeshRenderer>().material;
             m_grabbedObj.GetComponentInChildren<MeshRenderer>().material = outlineMaterial;
-            AcornGrabGameUpdate();
         }
 
         else if (m_grabbedObj && !(pinchStrength > pinchThreshold))
         {
             m_grabbedObj.GetComponentInChildren<MeshRenderer>().material = startingMaterial;
-            AcornReleaseGameUpdate();
             GrabEnd();
         }
     }

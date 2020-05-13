@@ -10,103 +10,111 @@ public class BasketSceneController : MonoBehaviour
     public GameObject basketPrefab;
     public GameObject squirrelPrefab;
     public GameObject acornPrefab;
-    public bool showSquirrel;
-    public bool basketInUpperHalf;
     public float maxX;
     public float maxY;
     public float maxZ;
+    public Text scoreText;
 
     // Initialize private variables
     private GameObject basket;
     private GameObject squirrel;
+    private int i;
 
     //Initiate static variables
-    public static List<GameObject> acorns;
-    public static bool addAcorn;
-    public static float acornsNotInBasket;
-    private static Text scoreText;
-    private static int interactions;
-    private static float time;
-    private static bool gameOver;
-    private static float totalPathLength;
-    private static float accuracy;
-    private static float handSpeed;
+    private List<GameObject> acorns;
+    private float time;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        basket = Instantiate(basketPrefab, new Vector3(0, 0.6f, 0.25f), Quaternion.identity);
-        if (!basketInUpperHalf)
-            basket.transform.position -= new Vector3(0, 0.3f, 0);
+        BasketInit();
         acorns = new List<GameObject>();
-        addAcorn = true;
-        gameOver = false;
-        interactions = 0;
-        acornsNotInBasket = 0;
-        time = Time.time;
-        scoreText = GetComponentInChildren<Text>();
-        AddAcorn();
         MakeSquirrel();
+        i = 0;
+
+
+        float x = UnityEngine.Random.Range(-maxX, maxX);
+        float y = UnityEngine.Random.Range(0.2f, maxY);
+        float z = UnityEngine.Random.Range(0, maxZ);
+        acorns.Add(Instantiate(acornPrefab, new Vector3(x, y, z), Quaternion.identity));
+        time = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        MakeSquirrel();
         AddAcorn();
-        if (!gameOver)
-        {
-            totalPathLength = Acorn.GetPathLength();
-            scoreText.text = "Score: " + (acorns.Count - 1).ToString() +
-                "\nTime: " + (Time.time - time).ToString("f1");
-        }
+
+        scoreText.text = "Score: " + (acorns.Count - 1).ToString() +
+                "\nTime: " + (Time.time - time).ToString("f1") +
+                "\ni: " + i++;
+        i %= 100;
     }
 
     void MakeSquirrel()
     {
-        if(showSquirrel)
+        int show = UnityEngine.Random.Range(0, 51);
+        if(show > 25)
         {
             squirrel = Instantiate(squirrelPrefab, basket.transform.position, Quaternion.identity);
-            squirrel.transform.position -= new Vector3(0, 0, 0.3f);
+            squirrel.transform.position -= new Vector3(0, 0, 0.2f);
         }
     }
 
     void AddAcorn()
     {
-        if (addAcorn && acorns.Count < 12 && !gameOver)
+        Acorn lastAcorn = acorns[acorns.Count - 1].GetComponentInChildren<Acorn>();
+        if (acorns.Count < 12 && lastAcorn.IsInBasket())
         {
-            addAcorn = false;
             float x = UnityEngine.Random.Range(-maxX, maxX);
             float y = UnityEngine.Random.Range(0.2f, maxY);
             float z = UnityEngine.Random.Range(0, maxZ);
             acorns.Add(Instantiate(acornPrefab, new Vector3(x, y, z), Quaternion.identity));
         }
 
+        else if (acorns.Count == 12 && lastAcorn.IsInBasket())
+            EndGame();
+
     }
 
-    public static void AddInteraction()
+
+    private void BasketInit()
     {
-        interactions++;
+        basket = Instantiate(basketPrefab, new Vector3(0, 0.6f, 0.25f), Quaternion.identity);
+        int basketInUpperHalf = UnityEngine.Random.Range(0, 51);
+        if (basketInUpperHalf > 25)
+            basket.transform.position -= new Vector3(0, 0.3f, 0);
     }
 
-    public static void StartGameTimer()
+    public void EndGame()
     {
-        time = Time.time;
-    }
+        int interactions = 0;
+        float totalPathLength = 0.0f;
+        float acc;
+        float handSpeed;
+        Acorn tempAcorn;
 
-    public static void EndGame()
-    {
-        gameOver = true;
-        //Update screen text to display all measurements
         time = Time.time - time;
-        accuracy = (12.0f / (float)interactions) * 100.0f;
+
+        foreach (GameObject ac in acorns)
+        {
+            tempAcorn = ac.GetComponentInChildren<Acorn>();
+            interactions += tempAcorn.GetInteractions();
+            totalPathLength += tempAcorn.GetPathLength();
+        }
+
+        acc = (12.0f / interactions) * 100.0f;
         handSpeed = totalPathLength / time;
+
+
+        //Update screen text to display all measurements
         scoreText.text = "Score: " + (acorns.Count).ToString() +
             ", Time: " + time.ToString("f1") +
             "\nTotal Path Length: " + totalPathLength.ToString("f3") +
-            "\nAccuracy: " + accuracy.ToString("f1") +
+            "\nAccuracy: " + acc.ToString("f1") +
             "%\nAvg hand speed: " + handSpeed.ToString("f2");
+        Time.timeScale = 0.0f;
     }
 
 }
