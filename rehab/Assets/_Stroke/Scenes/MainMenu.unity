@@ -865,7 +865,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1583417406}
-  - component: {fileID: 1583417407}
   m_Layer: 0
   m_Name: MainMenuSceneController
   m_TagString: Untagged
@@ -887,22 +886,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1583417407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1583417405}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b6c41f45ddd143c5a14acfd1b0e2fef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  balloonScene: {fileID: 593039827}
-  basketScene: {fileID: 429235102}
-  cubeScene: {fileID: 1562837203}
-  cashierScene: {fileID: 1647649125}
 --- !u!1 &1647649125
 GameObject:
   m_ObjectHideFlags: 0
