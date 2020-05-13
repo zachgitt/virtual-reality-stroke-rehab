@@ -25,8 +25,6 @@ public class CashierSceneController : MonoBehaviour
     private int score;
     private int fails;
     
-
-
     // Start is called before the first frame update
     void Start()
     {
