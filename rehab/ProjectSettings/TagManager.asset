@@ -9,6 +9,9 @@ TagManager:
   - CubeScene
   - LeftHand
   - RightHand
+  - Basket
+  - Acorn
+  - CashierScene
   layers:
   - Default
   - TransparentFX

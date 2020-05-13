@@ -8,6 +8,7 @@ public class MainMenuSceneController : MonoBehaviour
     public GameObject balloonScene;
     public GameObject basketScene;
     public GameObject cubeScene;
+    public GameObject cashierScene;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -23,6 +24,10 @@ public class MainMenuSceneController : MonoBehaviour
 
             case "CubeScene":
                 SceneManager.LoadScene(3);
+                break;
+
+            case "CashierScene":
+                SceneManager.LoadScene(4);
                 break;
 
             default:
