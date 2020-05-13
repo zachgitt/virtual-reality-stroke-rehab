@@ -9,7 +9,7 @@ public class BasketSceneController : MonoBehaviour
     // Initalize publicvariables
     public GameObject basketPrefab;
     public GameObject squirrelPrefab;
-    public GameObject acornPrefab;
+    public Acorn acornPrefab;
     public float maxX;
     public float maxY;
     public float maxZ;
@@ -18,38 +18,50 @@ public class BasketSceneController : MonoBehaviour
     // Initialize private variables
     private GameObject basket;
     private GameObject squirrel;
-    private int i;
-
-    //Initiate static variables
-    private List<GameObject> acorns;
+    private List<Acorn> acorns;
     private float time;
+    private bool gameOver;
+    private bool gameStarted;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        acorns = new List<Acorn>();
+        time = 0.0f;
+        gameOver = false;
+        gameStarted = false;
+
         BasketInit();
-        acorns = new List<GameObject>();
         MakeSquirrel();
-        i = 0;
-
-
-        float x = UnityEngine.Random.Range(-maxX, maxX);
-        float y = UnityEngine.Random.Range(0.2f, maxY);
-        float z = UnityEngine.Random.Range(0, maxZ);
-        acorns.Add(Instantiate(acornPrefab, new Vector3(x, y, z), Quaternion.identity));
-        time = Time.time;
+        SpawnAcorn();
     }
 
     // Update is called once per frame
     void Update()
     {
-        AddAcorn();
+        if (acorns[0].GetInteractions() > 0 && !gameStarted)
+        {
+            time = Time.time;
+            gameStarted = true;
+        }
 
-        scoreText.text = "Score: " + (acorns.Count - 1).ToString() +
-                "\nTime: " + (Time.time - time).ToString("f1") +
-                "\ni: " + i++;
-        i %= 100;
+        if (acorns.Count < 12 && acorns[acorns.Count - 1].IsInBasket())
+            SpawnAcorn();
+
+        if (!gameOver)
+            scoreText.text = "Score: " + (acorns.Count - 1).ToString() +
+                    "\nTime: " + (Time.time - time).ToString("f1");
+
+        if (acorns.Count == 12)
+        {
+            if (acorns[11].IsInBasket())
+            {
+                EndGame();
+                gameOver = true;
+                Time.timeScale = 0.0f;
+            }
+        }
     }
 
     void MakeSquirrel()
@@ -62,22 +74,13 @@ public class BasketSceneController : MonoBehaviour
         }
     }
 
-    void AddAcorn()
+    void SpawnAcorn()
     {
-        Acorn lastAcorn = acorns[acorns.Count - 1].GetComponentInChildren<Acorn>();
-        if (acorns.Count < 12 && lastAcorn.IsInBasket())
-        {
-            float x = UnityEngine.Random.Range(-maxX, maxX);
-            float y = UnityEngine.Random.Range(0.2f, maxY);
-            float z = UnityEngine.Random.Range(0, maxZ);
-            acorns.Add(Instantiate(acornPrefab, new Vector3(x, y, z), Quaternion.identity));
-        }
-
-        else if (acorns.Count == 12 && lastAcorn.IsInBasket())
-            EndGame();
-
+        float x = UnityEngine.Random.Range(-maxX, maxX);
+        float y = UnityEngine.Random.Range(basket.transform.position.y, maxY);
+        float z = UnityEngine.Random.Range(0, maxZ);
+        acorns.Add(Instantiate(acornPrefab, new Vector3(x, y, z), Quaternion.identity));
     }
-
 
     private void BasketInit()
     {
@@ -89,19 +92,19 @@ public class BasketSceneController : MonoBehaviour
 
     public void EndGame()
     {
+        if (gameOver)
+            return;
+
         int interactions = 0;
         float totalPathLength = 0.0f;
         float acc;
         float handSpeed;
-        Acorn tempAcorn;
 
         time = Time.time - time;
-
-        foreach (GameObject ac in acorns)
+        foreach (Acorn ac in acorns)
         {
-            tempAcorn = ac.GetComponentInChildren<Acorn>();
-            interactions += tempAcorn.GetInteractions();
-            totalPathLength += tempAcorn.GetPathLength();
+            interactions += ac.GetInteractions();
+            totalPathLength += ac.GetPathLength();
         }
 
         acc = (12.0f / interactions) * 100.0f;

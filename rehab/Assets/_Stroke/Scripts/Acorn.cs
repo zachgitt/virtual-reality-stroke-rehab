@@ -11,7 +11,6 @@ public class Acorn : OVRGrabbable
     private Vector3 startPos;
     private float pathLength = 0.0f;
     private Vector3 prevPos;
-    public string tagg;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -22,7 +21,6 @@ public class Acorn : OVRGrabbable
         inBasket = false;
         pathLength = 0.0f;
         interactions = 0;
-        tagg = "None";
         base.Start();
     }
 
@@ -35,11 +33,7 @@ public class Acorn : OVRGrabbable
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Basket"))
-        {
             inBasket = true;
-            tagg = other.tag;
-            interactions++;
-        }
     }
 
 
@@ -67,13 +61,14 @@ public class Acorn : OVRGrabbable
             GetComponentInChildren<Rigidbody>().isKinematic = true;
             transform.position = startPos;
             pathLength = 0.0f;
-            interactions++;
         }
     }
 
     public override void GrabBegin(OVRGrabber hand, Collider grabPoint)
     {
         base.GrabBegin(hand, grabPoint);
+        GetComponentInChildren<Renderer>().material.color = startingMaterial.color;
+        interactions++;
     }
 
     public override void GrabEnd(Vector3 linearVelocity, Vector3 angularVelocity)

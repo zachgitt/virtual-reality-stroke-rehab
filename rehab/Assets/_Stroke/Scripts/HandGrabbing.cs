@@ -32,13 +32,14 @@ public class HandGrabbing : OVRGrabber
         if (!m_grabbedObj && (pinchStrength > pinchThreshold) && (m_grabCandidates.Count > 0))
         {
             GrabBegin();
-            startingMaterial = m_grabbedObj.GetComponentInChildren<MeshRenderer>().material;
-            m_grabbedObj.GetComponentInChildren<MeshRenderer>().material = outlineMaterial;
+            startingMaterial = m_grabbedObj.GetComponentInChildren<Renderer>().material;
+            m_grabbedObj.GetComponentInChildren<Renderer>().material = outlineMaterial;
+            m_grabbedObj.GetComponentInChildren<Renderer>().material.color = startingMaterial.color;
         }
 
         else if (m_grabbedObj && !(pinchStrength > pinchThreshold))
         {
-            m_grabbedObj.GetComponentInChildren<MeshRenderer>().material = startingMaterial;
+            m_grabbedObj.GetComponentInChildren<Renderer>().material = startingMaterial;
             GrabEnd();
         }
     }

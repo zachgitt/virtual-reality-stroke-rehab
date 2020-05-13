@@ -584,7 +584,7 @@ MonoBehaviour:
     type: 3}
   squirrelPrefab: {fileID: 5287841870042677189, guid: cf9ce9a7fc6f145e68600ec634cc3025,
     type: 3}
-  acornPrefab: {fileID: 6327028965219171534, guid: 0832f5567494442f8af071aad5c910a1,
+  acornPrefab: {fileID: 5627733100561947731, guid: 0832f5567494442f8af071aad5c910a1,
     type: 3}
   maxX: 0.5
   maxY: 0.8
