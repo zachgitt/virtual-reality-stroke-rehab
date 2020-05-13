@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class BalloonSceneController : MonoBehaviour
 {
     // Initalize variables
-    public GameObject balloonPrefab;
+    public Balloon balloonPrefab;
     public OVRHand leftHand;
     public OVRHand rightHand;
     public Text scoreText;
@@ -15,38 +15,31 @@ public class BalloonSceneController : MonoBehaviour
     public float maxZ;
 
     // Initialize private variables
-    private List<GameObject> balloons;
+    private List<Balloon> balloons;
     private float averageHandSpeed;
-    private static float pathLength;
+    private float pathLength;
     private float time;
-    private bool gameStarted;
-    private static bool gameOver;
-    private static bool showRes;
-    private int score;
-    private static Vector3 leftPos;
-    private static Vector3 rightPos;
-    private static float leftyDist;
-    private static float rightyDist;
-    private static string hand;
+    private bool gameOver;
+    private Vector3 leftPos;
+    private Vector3 rightPos;
+    private float leftyDist;
+    private float rightyDist;
 
     // Start is called before the first frame update
     void Start()
     {
-        gameStarted = false;
         gameOver = false;
-        showRes = false;
 
         leftyDist = 0.0f;
         rightyDist = 0.0f;
         pathLength = 0;
-        score = 0;
-        hand = "none";
 
         leftPos = leftHand.transform.position;
         rightPos = rightHand.transform.position;
 
-        balloons = new List<GameObject>();
-        CreateBalloon();
+        balloons = new List<Balloon>();
+        time = Time.time;
+        SpawnBalloon();
     }
 
     // Update is called once per frame
@@ -55,26 +48,34 @@ public class BalloonSceneController : MonoBehaviour
         CreateBalloon();
         UpdateScreenText();
         TrackPathLength();
+
+        if (balloons.Count == 12)
+        {
+            if (balloons[11].IsPopped())
+            {
+                UpdatePathLength(balloons[balloons.Count - 1].PoppedBy());
+                DisplayResults();
+                Time.timeScale = 0.0f;
+            }
+        }
+    }
+
+    void SpawnBalloon()
+    {
+        float x = Random.Range(-maxX, maxX);
+        float y = Random.Range(0.2f, maxY);
+        float z = Random.Range(0, maxZ);
+        balloons.Add(Instantiate(balloonPrefab, new Vector3(x, y, z), Quaternion.identity));
     }
 
     private void CreateBalloon()
     {
-        if (!Balloon.IsLastActive() && balloons.Count < 12)
+        if (balloons[balloons.Count - 1].IsPopped() && balloons.Count < 12)
         {
-            float x = Random.Range(-maxX, maxX);
-            float y = Random.Range(0.2f, maxY);
-            float z = Random.Range(0, maxZ);
-            balloons.Add(Instantiate(balloonPrefab, new Vector3(x, y, z), Quaternion.identity));
-
-            if (balloons.Count == 2 && !gameStarted)
-            {
-                gameStarted = true;
-                time = Time.time;
-            }
+            UpdatePathLength(balloons[balloons.Count - 1].PoppedBy());
+            SpawnBalloon();
         }
 
-        else if (balloons.Count == 12 && !Balloon.IsLastActive())
-            EndGame();
     }
 
     void TrackPathLength()
@@ -95,38 +96,37 @@ public class BalloonSceneController : MonoBehaviour
     {
         if (!gameOver)
         {
-            score = balloons.Count - 1;
             scoreText.text =
                 "Time: " + (Time.time - time).ToString("f1") + "s" +
-                "\nScore: " + score.ToString() +
-                "\nhand: " + hand;
+                "\nScore: " + (balloons.Count-1).ToString();
         }
 
-        else if (showRes)
+        else
             DisplayResults();
     }
 
-    public static void UpdatePathLength(string name, Vector3 pos)
+    void UpdatePathLength(string name)
     {
         Vector3 lastPos;
+        Vector3 currHandPos;
         float lastDist;
 
         if (name.Contains("_L"))
         {
+            currHandPos = leftHand.transform.position;
             lastPos = leftPos;
             lastDist = leftyDist;
-            hand = "left";
         }
         else
-        { 
+        {
+            currHandPos = rightHand.transform.position;
             lastPos = rightPos;
             lastDist = rightyDist;
-            hand = "right";
         }
 
-        lastDist += Mathf.Sqrt(Mathf.Pow(pos.x - lastPos.x, 2));
-        lastDist += Mathf.Sqrt(Mathf.Pow(pos.y - lastPos.y, 2));
-        lastDist += Mathf.Sqrt(Mathf.Pow(pos.z - lastPos.z, 2));
+        lastDist += Mathf.Sqrt(Mathf.Pow(currHandPos.x - lastPos.x, 2));
+        lastDist += Mathf.Sqrt(Mathf.Pow(currHandPos.y - lastPos.y, 2));
+        lastDist += Mathf.Sqrt(Mathf.Pow(currHandPos.z - lastPos.z, 2));
         pathLength += lastDist;
 
         leftyDist = 0.0f;
@@ -135,20 +135,17 @@ public class BalloonSceneController : MonoBehaviour
 
     void DisplayResults()
     {
+        if (gameOver)
+            return;
+
         averageHandSpeed = pathLength / (Time.time - time);
         scoreText.text =
             "Time: " + (Time.time - time).ToString("f1") + "s" +
-            "\nScore: 12" +
+            "\nScore: " + balloons.Count.ToString() +
             "\n Avg Hand Speed: " + averageHandSpeed.ToString("f2") +
             "\n Total Path Length: " + pathLength.ToString("f2");
-        showRes = false;
-        Time.timeScale = 0;
+        gameOver = true;
     }
 
-    void EndGame()
-    {
-        gameOver = true;
-        showRes = true;
-    }
 
 }

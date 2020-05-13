@@ -643,7 +643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2984256403954d8b903d35379611274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  balloonPrefab: {fileID: 6574056156901932910, guid: 7ef10a103467c44c295210aa2c7d8715,
+  balloonPrefab: {fileID: 2597688791901980715, guid: 7ef10a103467c44c295210aa2c7d8715,
     type: 3}
   leftHand: {fileID: 1994061869}
   rightHand: {fileID: 958267028}

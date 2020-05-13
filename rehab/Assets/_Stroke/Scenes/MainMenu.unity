@@ -902,7 +902,7 @@ MonoBehaviour:
   balloonScene: {fileID: 593039827}
   basketScene: {fileID: 429235102}
   cubeScene: {fileID: 1562837203}
-  cashierScene: {fileID: 0}
+  cashierScene: {fileID: 1647649125}
 --- !u!1 &1647649125
 GameObject:
   m_ObjectHideFlags: 0

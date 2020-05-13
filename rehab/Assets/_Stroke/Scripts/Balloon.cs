@@ -4,32 +4,33 @@ using UnityEngine;
 
 public class Balloon : MonoBehaviour
 {
-    private static bool lastBalloonActive;
+    private bool popped;
+    private string poppedBy;
 
     // Start is called before the first frame update
     void Start()
     {
-        lastBalloonActive = true;
+        popped = false;
+        poppedBy = "none";
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool IsPopped() { return popped; }
+    public string PoppedBy() { return poppedBy; }
+
+    private string GetHand(Collider hand)
     {
-
-        
+        return hand.transform.parent.transform.parent.transform.parent.name;
     }
-
-    public static bool IsLastActive()
-    {
-        return lastBalloonActive;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        this.gameObject.SetActive(false);
-        lastBalloonActive = false;
-        string handName = other.transform.parent.transform.parent.transform.parent.name;
-        BalloonSceneController.UpdatePathLength(handName, other.transform.position);
+        gameObject.SetActive(false);
+        popped = true;
+
+        string handName = GetHand(other);
+        if (handName.Contains("L"))
+            poppedBy = "left";
+        else if (handName.Contains("R"))
+            poppedBy = "right";
     }
 
 }
